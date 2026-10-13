@@ -66,12 +66,3 @@ registry.call("calculate", {"a": 1, "op": "pow"}).error
 | `platform/observability/` | Run trace recording |
 | `platform/api/` | App, routes, tenant auth middleware |
 | `platform/ui/ControlPanel.jsx` | Control panel component for triggering runs |
-
-## Status
-
-The skill system works in isolation; the service doesn't start yet:
-
-- **The package name shadows the standard library.** Code lives in a directory named `platform`, which collides with Python's built-in `platform` module, so imports like `platform.api.main` fail. Renaming the package is the first fix.
-- **Missing modules:** `platform/db/postgres.py` (`cursor`, `init_schema`), `platform/retrieval/embeddings.py`, and `platform/llm/providers.py`. The `run_traces` table used by tracing isn't in `schema.sql`.
-- **Building blocks not yet wired in:** the orchestrator calls the registry directly rather than the resilient executor, and doesn't apply the side-effect guardrail or enforce `require_grounding`.
-- Registered agents live in memory; there's no dependency file or test suite.
